@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ultrapower.viedo.dao.ViedoDetialDaoMapper">
+   <sql id="allViedoDetial">
+  
+    id id,
+    create_time createTime,  
+    img_format imgFormat,
+    img_name imgName,
+    img_size imgSize,
+    img_url imgUrl,
+    vaild_status vaildStatus,
+    browse_count browseCount,
+    praise_count praiseCount,
+    update_time updateTime,
+    user_name userName,
+    viedo_title viedoTitle,
+    viedo_classify_id viedoClassifyId,
+    viedo_classify_name viedoClassifyName,
+    viedo_description viedoDescription,
+    viedo_format viedoFormat,
+    viedo_length viedoLength,
+    max_img_url maxImgUrl ,
+    small_img_url smallImgUrl ,
+    
+    viedo_name viedoName,
+    viedo_size viedoSize,
+    viedo_type viedoType,
+    viedo_url viedoUrl,
+    code_url codeUrl,
+    user_province_id userProvinceId,
+    user_province_name  userProvinceName,
+    user_city_id     userCityId ,
+    viedo_city_name userCityName,
+    code_name codeName,
+    code_format codeFormat
+    </sql>
+  
+   <select id="getViedoDetail" parameterType="map" resultType="com.ultrapower.viedo.vo.ViedoDetialVo">   
+   SELECT 
+   (SELECT ui.UserMidHeaderImage FROM UserInfo ui WHERE	ui.userName = vkvd.user_name) userImg,
+   (SELECT uoi.ORG_NAME_DISPLAY 
+      FROM UserInfo ui 
+      LEFT JOIN UserOrgInfo uoi on ui.UserORG_CODE=uoi.ORG_CODE
+		WHERE
+			ui.userName = vkvd.user_name)userOrg,
+  (SELECT ui.UserPhoneNum FROM UserInfo ui WHERE	ui.userName = vkvd.user_name) phone,
+  (SELECT ui.UserNick FROM UserInfo ui WHERE	ui.userName = vkvd.user_name) userNick,
+   (SELECT ui.UserEmail FROM UserInfo ui WHERE	ui.userName = vkvd.user_name)email,
+   <include refid="allViedoDetial"/>
+    FROM vk_viedo_details vkvd
+   <where>
+     vkvd.vaild_status=1 
+     <if test=" null != viedoClassifyId and '' != viedoClassifyId  ">
+     and  vkvd.viedo_classify_id =${viedoClassifyId}
+     </if>
+       <if test=" userName != null and userName != '' ">
+     and  vkvd.user_name= #{userName}
+     </if>
+    
+     <!-- <if test=" orderByUploadTime != null and orderByUploadTime != '' ">
+      	ORDER BY vkvd.create_time DESC
+     </if>
+      limit #{pageNum},#{pageSize} -->
+   </where>
+   </select>
+   <select id="getViedoDetailById" parameterType="map" resultType="com.ultrapower.viedo.vo.ViedoDetialVo">   
+   SELECT 
+    (SELECT ui.UserMidHeaderImage FROM UserInfo ui WHERE	ui.userName = vkvd.user_name) userImg,
+    (SELECT uoi.ORG_NAME_DISPLAY 
+      FROM UserInfo ui 
+      LEFT JOIN UserOrgInfo uoi on ui.UserORG_CODE=uoi.ORG_CODE
+		WHERE
+			ui.userName = vkvd.user_name)userOrg,
+   (SELECT ui.UserNick FROM UserInfo ui WHERE	ui.userName = vkvd.user_name)userNick ,
+   (SELECT ui.UserPhoneNum FROM UserInfo ui WHERE	ui.userName = vkvd.user_name) phone,
+   (SELECT ui.UserEmail FROM UserInfo ui WHERE	ui.userName = vkvd.user_name)email,
+   <include refid="allViedoDetial"/>
+    FROM vk_viedo_details vkvd
+   <where>
+     vkvd.vaild_status=1 
+      and  vkvd.id=#{id}
+     limit 0,1
+   </where>
+   </select>
+ 
+   <insert id="addViedoDetail" parameterType="com.ultrapower.viedo.bean.ViedoDetial" useGeneratedKeys="true" keyProperty="id">
+    insert into vk_viedo_details
+    (browse_count,img_format,img_name,img_size,img_url,vaild_status,praise_count,update_time,user_name,viedo_classify_id,viedo_classify_name,create_time,
+    viedo_description,viedo_format,viedo_length,
+    viedo_name,viedo_size, viedo_type,viedo_url,viedo_md5,code_url,
+    user_province_id,user_province_name,user_city_id,
+    viedo_city_name,viedo_title,max_img_url,small_img_url,code_name,code_format) 
+    
+    values(${browseCount},#{imgFormat},#{imgName},#{imgSize},#{imgUrl},${vaildStatus},${praiseCount},
+    #{updateTime},#{userName},${viedoClassifyId},#{viedoClassifyName},#{createTime},#{viedoDescription},#{viedoFormat},#{viedoLength},#{viedoName},#{viedoSize},
+    ${viedoType},#{viedoUrl},#{viedoMd5},
+    #{codeUrl},${userProvinceId},#{userProvinceName},
+    ${userCityId},#{userCityName},#{viedoTitle},#{maxImgUrl},#{smallImgUrl},#{codeName},#{codeFormat})
+   
+   </insert>
+     <insert id="addViedoDetailUploadRecord" parameterType="com.ultrapower.viedo.bean.ViedoRecord">
+    insert into vk_viedo_update_record
+     (viedo_id,browse_count,img_format,img_name,img_size,img_url,vaild_status,praise_count,update_time,user_name,viedo_classify_id,viedo_classify_name,create_time,
+    viedo_description,viedo_format,viedo_length,
+    viedo_name,viedo_size, viedo_type,viedo_url,viedo_md5,code_url,
+    user_province_id,user_province_name,user_city_id,
+    viedo_city_name,viedo_title,max_img_url,small_img_url,code_name,code_format) 
+    
+    values(${viedoId},${browseCount},#{imgFormat},#{imgName},#{imgSize},#{imgUrl},${vaildStatus},${praiseCount},
+    #{updateTime},#{userName},${viedoClassifyId},#{viedoClassifyName},#{createTime},#{viedoDescription},#{viedoFormat},#{viedoLength},#{viedoName},#{viedoSize},
+    ${viedoType},#{viedoUrl},#{viedoMd5},
+    #{codeUrl},${userProvinceId},#{userProvinceName},
+    ${userCityId},#{userCityName},#{viedoTitle},#{maxImgUrl},#{smallImgUrl},#{codeName},#{codeFormat})
+ 
+   </insert>
+   
+   <update id="updateViedoDetail" parameterType="com.ultrapower.viedo.bean.ViedoDetial">
+     update  vk_viedo_details  vkvd
+     <set>
+
+        <if test=" browseCount != null and browseCount !='' ">
+        vkvd.browse_count=#{browseCount},
+        </if>
+         <if test=" imgFormat != null and imgFormat !='' ">
+        vkvd.img_format=#{imgFormat},
+        </if>
+        <if test=" imgName != null and imgName !='' ">
+        vkvd.img_name=#{imgName},
+        </if>
+          <if test=" imgUrl != null and imgUrl !='' ">
+        vkvd.img_url=#{imgUrl},
+        </if>
+        <if test=" imgSize != null and imgSize !='' ">
+        vkvd.img_size=#{imgSize},
+        </if>
+         <if test=" vaildStatus != null">
+        vkvd.vaild_status=#{vaildStatus},
+        </if>
+          <if test=" praiseCount != null and praiseCount !='' ">
+        vkvd.praise_count=#{praiseCount},
+        </if>
+         <if test=" updateTime != null and updateTime !='' ">
+        vkvd.update_time=#{updateTime},
+        </if>
+         <if test=" userName != null and userName !='' ">
+        vkvd.user_name=#{userName},
+        </if>
+         <if test=" viedoDescription != null and viedoDescription !='' ">
+        vkvd.viedo_description=#{viedoDescription},
+        </if>
+         <if test=" viedoFormat != null and viedoFormat !='' ">
+        vkvd.viedo_format=#{viedoFormat},
+        </if>
+         <if test=" viedoLength != null and viedoLength !='' ">
+        vkvd.viedo_length=#{viedoLength},
+        </if>
+         <if test=" viedoName != null and viedoName !='' ">
+        vkvd.viedo_name=#{viedoName},
+        </if>
+         <if test=" viedoSize != null and viedoSize !='' ">
+        vkvd.viedo_size=#{viedoSize},
+        </if>
+         <if test=" viedoType != null and viedoType !='' ">
+        vkvd.viedo_type=#{viedoType},
+        </if>
+         <if test=" viedoUrl != null and viedoUrl !='' ">
+        vkvd.viedo_url=#{viedoUrl},
+        </if>
+          <if test=" viedoMd5 != null and viedoMd5 !='' ">
+        vkvd.viedo_md5=#{viedoMd5}, 
+        </if>
+             <if test=" codeUrl != null and codeUrl !='' ">
+        vkvd.code_url=#{codeUrl},  
+        </if>
+         <if test=" viedoClassifyId != null and viedoClassifyId !='' ">
+        vkvd.viedo_classify_id=#{viedoClassifyId},
+        </if>
+          <if test=" viedoClassifyName != null and viedoClassifyName !='' ">
+        vkvd.viedo_classify_name=#{viedoClassifyName},
+        </if>
+         <if test=" userProvinceId != null and userProvinceId !='' ">
+        vkvd.user_province_id=${userProvinceId},
+        </if>
+          <if test=" userProvinceName != null and userProvinceName !='' ">
+        vkvd.user_province_name=#{userProvinceName},
+        </if>
+          <if test=" userCityId != null and userCityId !='' ">
+        vkvd.user_city_id=${userCityId},
+        </if>
+          <if test=" userCityName != null and userCityName !='' ">
+        vkvd.viedo_city_name=#{userCityName},
+        </if> 
+         <if test=" viedoTitle != null and viedoTitle !='' ">
+        vkvd.viedo_title=#{viedoTitle},
+        </if>  
+          
+          <if test=" maxImgUrl != null and maxImgUrl !='' ">
+        vkvd.max_img_url=#{maxImgUrl},
+        </if> 
+         <if test=" smallImgUrl != null and smallImgUrl !='' ">
+        vkvd.small_img_url=#{smallImgUrl},
+        </if>  
+           <if test=" codeName != null and codeName !='' ">
+        vkvd.code_name=#{codeName},
+        </if>   
+           <if test=" codeFormat != null and codeFormat !='' ">
+        vkvd.code_format=#{codeFormat},
+        </if>      
+     </set>
+     <where>
+       <if test=" id != null and id != '' ">
+        vkvd.id=com.ultrapower:viedo:war:0.0.1-SNAPSHOT
+       </if>
+     </where>
+   </update>
+   <!-- 浏览记录 -->
+      <update id="updateViedoDetailBrowseCount" parameterType="map">
+     update  vk_viedo_details  vkvd
+     <set>
+        vkvd.browse_count=vkvd.browse_count+1
+     </set>
+     <where>
+        vkvd.id=com.ultrapower:viedo:war:0.0.1-SNAPSHOT
+     </where>
+   </update>
+   <!-- 点赞 -->
+    <update id="updateViedoDetailPariseCount" parameterType="map">
+     update  vk_viedo_details  vkvd
+     <set>
+        vkvd.praise_count=vkvd.praise_count+1
+     </set>
+     <where>
+        vkvd.id=com.ultrapower:viedo:war:0.0.1-SNAPSHOT
+     </where>
+   </update>
+     <select id="getCountViedoDetail"  resultType="java.lang.Integer">   
+   SELECT count(*)
+    FROM vk_viedo_details vkvd
+   <where>
+   
+     vkvd.vaild_status=1 
+     <if test=" viedoClassifyId != null and viedoClassifyId != '' ">
+     and  vkvd.viedo_classify_id=${viedoClassifyId}
+     </if>
+     <if test=" userName != null and userName != '' ">
+     and  vkvd.user_name=${userName}
+     </if>
+   </where>
+   </select>
+   
+   <select id="comparisonViedoMD5" parameterType="string"  resultType="java.lang.Integer">
+   select count(*) from vk_viedo_details  vkvd
+   <where>
+     vkvd.viedo_md5=#{md5}
+     and vkvd.vaild_status=1;
+   </where>
+   </select>
+
+
+</mapper>

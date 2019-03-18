@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper  namespace="com.ultrapower.viedo.dao.TeacherTestDaoMapper">
+	<select id="getUser" resultMap="user" parameterType="int">
+		select u.*,t.* from users u,tbl_teacher t where u.id=1 and u.teacher_id=t.id
+	</select>
+	<select id="getById" parameterType="int" resultMap="user">
+		select * from users where users.id=#{id}
+	</select>
+
+	<select id="getTeacher" resultMap="teacher">
+		select * from tbl_teacher where id=#{id}
+	</select>
+	<resultMap type="viedo.User" id="user">
+		<id column="id" property="id" javaType="int" jdbcType="INTEGER"></id>
+		<result column="name" property="name" javaType="string" jdbcType="VARCHAR" />
+	</resultMap>
+	<resultMap type="viedo.Teacher" id="teacher">
+		<collection property="user" javaType="viedo.User" select="getById" column="id"/>
+	</resultMap>
+</mapper>

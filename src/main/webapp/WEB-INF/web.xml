@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:web="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	version="3.0">
+    
+  <context-param>
+    <param-name>spring.profiles.active</param-name>
+    <param-value>dev</param-value>
+  </context-param>
+	<servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.jsp</url-pattern>
+    </servlet-mapping>
+	 <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.jpg</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.js</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.css</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.html</url-pattern>
+    </servlet-mapping>
+  <!--   <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.png</url-pattern>
+    </servlet-mapping>  -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath*:spring.xml</param-value>
+	</context-param>
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<!-- swagger ui 的静态资源交由default处理-->
+	  <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/swagger-ui.html</url-pattern>
+    </servlet-mapping>
+	<!-- 监听dwr -->
+	 <servlet> 
+        <servlet-name>dwr-invoker</servlet-name> 
+        <servlet-class> 
+            org.directwebremoting.servlet.DwrServlet 
+        </servlet-class> 
+        <init-param> 
+            <description>调试DWR,发布系统时应将其设为false</description> 
+            <param-name>debug</param-name> 
+            <param-value>true</param-value> 
+        </init-param> 
+        <init-param> 
+            <description>使用服务器推技术(反转AJAX)</description> 
+            <param-name>activeReverseAjaxEnabled</param-name> 
+            <param-value>true</param-value> 
+        </init-param> 
+        <init-param> 
+            <param-name> 
+               initApplicationScopeCreatorsAtStartup 
+            </param-name> 
+            <param-value>true</param-value> 
+        </init-param>
+        <init-param> 
+            <param-name>maxWaitAfterWrite</param-name> 
+            <param-value>100</param-value> 
+        </init-param> 
+        <load-on-startup>4</load-on-startup> 
+    </servlet> 
+    <servlet-mapping> 
+        <servlet-name>dwr-invoker</servlet-name> 
+        <url-pattern>/dwr/*</url-pattern> 
+    </servlet-mapping> 
+
+
+	<servlet>
+		<servlet-name>springDispatcherServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+		  <param-name>contextConfigLocation</param-name>
+		  <param-value>classpath*:spring-mvc.xml</param-value>	
+		 <!-- <param-value>classpath*: spring-url.xml</param-value> -->
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>springDispatcherServlet</servlet-name>
+		<url-pattern>*.do</url-pattern>
+	</servlet-mapping>
+    <servlet-mapping>
+    <servlet-name>springDispatcherServlet</servlet-name>
+    <url-pattern>*.htm</url-pattern>
+</servlet-mapping>
+<!-- 配置swagger-bootstrap-ui的url请求路径-->
+<servlet-mapping>
+    <servlet-name>springDispatcherServlet</servlet-name>
+    <url-pattern>/v2/api-docs</url-pattern>
+</servlet-mapping>
+
+
+
+	<context-param>
+		<param-name>logbackConfigLocation</param-name>
+		<param-value>classpath*:logback.xml</param-value>
+	</context-param>
+	<servlet>
+		<servlet-name>duridStatView</servlet-name>
+		<servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class>
+		<init-param>
+			<param-name>loginUsername</param-name>
+			<param-value>root</param-value>
+		</init-param>
+		<init-param>
+			<param-name>loginPassword</param-name>
+			<param-value>123456</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>duridStatView</servlet-name>
+		<url-pattern>/durid/*</url-pattern>
+	</servlet-mapping>
+
+	<filter>
+		<filter-name>WebStatFilter</filter-name>
+		<filter-class>com.alibaba.druid.support.http.WebStatFilter</filter-class>
+		<init-param>
+			<param-name>exclusions</param-name>
+			<param-value>*.js,*.css,/druid*,*.jsp,*.swf</param-value>
+		</init-param>
+
+	</filter>
+
+	<filter-mapping>
+		<filter-name>WebStatFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+</web-app>
