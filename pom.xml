@@ -345,11 +345,11 @@
           <version>1.18.4</version>
       </dependency>
       <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
-    <dependency>
-        <groupId>com.google.guava</groupId>
-        <artifactId>guava</artifactId>
-        <version>23.0</version>
-    </dependency>
+   <dependency>
+   <groupId>com.google.guava</groupId>
+   <artifactId>guava</artifactId>
+   <version>23.0</version>
+</dependency>
     </dependencies>
     <build>
         <finalName>viedo</finalName>
