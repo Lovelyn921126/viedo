@@ -47,6 +47,7 @@ public class AsyncController {
     UserInfoService userInfoService;
 
     public void getBook(HttpServletRequest request, @RequestParam("Id") final Integer Id) {
+        System.out.println("");
         oneLevelAsynContent.submitFuture(request, () -> userInfoService.get2(Id));
     }
 }
