@@ -57,7 +57,7 @@
     <bean id="atomikosUserTransaction" class="com.atomikos.icatch.jta.UserTransactionImp">
       <property name="transactionTimeout" value="300000"/>
     </bean>
-    <bean id="" class="org.springframework.transaction.jta.JtaTransactionManager">
+    <bean id="springTransactionManager" class="org.springframework.transaction.jta.JtaTransactionManager">
       <property name="transactionManager">
        <ref bean="atomikosTransactionManager"/>
       </property>
@@ -77,8 +77,36 @@
        </tx:attributes>
     </tx:advice>
     <!--mybatis的相关配置-->
-    <bean id="sqlsessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+    <bean id="sqlsessionFactoryOne" class="org.mybatis.spring.SqlSessionFactoryBean">
       <property name="dataSource" ref="dataSourceOne"/>
-      <property name="configLocation"></property>
+      <property name="configLocation" value="classpath:myBatis.xml"/>
+      <property name="mapperLocations" value="classpath*:com/ultrapower/viedo/dao/*Mapper.xml" />
+		<property name="plugins">
+			<list>
+				<bean class="com.github.miemiedev.mybatis.paginator.OffsetLimitInterceptor">
+					<property name="dialectClass" value="com.github.miemiedev.mybatis.paginator.dialect.MySQLDialect"></property>
+				</bean>
+			</list>
+		</property>
+    </bean>
+     <bean id="sqlsessionFactoryTwo" class="org.mybatis.spring.SqlSessionFactoryBean">
+      <property name="dataSource" ref="dataSourceOne"/>
+      <property name="configLocation" value="classpath:myBatis.xml"/>
+      <property name="mapperLocations" value="classpath*:com/ultrapower/viedo/dao/*Mapper.xml" />
+        <property name="plugins">
+            <list>
+                <bean class="com.github.miemiedev.mybatis.paginator.OffsetLimitInterceptor">
+                    <property name="dialectClass" value="com.github.miemiedev.mybatis.paginator.dialect.MySQLDialect"></property>
+                </bean>
+            </list>
+        </property>
+    </bean>
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="sqlSessionFactoryBeanName" value="sqlsessionFactoryOne" />
+		<property name="basePackage" value="com.ultrapower.viedo.dao"></property>
+	</bean>
+     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="sqlsessionFactoryTwo" />
+        <property name="basePackage" value="com.ultrapower.viedo.dao"></property>
     </bean>
 </beans>
