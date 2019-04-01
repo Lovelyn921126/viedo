@@ -350,6 +350,16 @@
    <artifactId>guava</artifactId>
    <version>23.0</version>
 </dependency>
+   <dependency>
+       <groupId>com.atomikos</groupId>
+       <artifactId>transactions-jdbc</artifactId>
+       <version>4.0.6</version>
+   </dependency>
+   <dependency>
+       <groupId>com.atomikos</groupId>
+       <artifactId>atomikos-util</artifactId>
+       <version>4.0.6</version>
+   </dependency>
     </dependencies>
     <build>
         <finalName>viedo</finalName>

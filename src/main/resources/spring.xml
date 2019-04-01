@@ -146,7 +146,7 @@
 	</tx:advice>
 	<aop:config>
 		<aop:pointcut expression="execution(* com.ultrapower.viedo.service..*.*(..))" id="txPointcut" />
-		<aop:advisor pointcut-ref="txPointcut" advice-ref="txAdvice" />
+		<aop:advisor pointcut-ref="txPointcut" advice-ref="txAdvice"  />
 	</aop:config>
    
 	<!-- <cache:annotation-driven/>
