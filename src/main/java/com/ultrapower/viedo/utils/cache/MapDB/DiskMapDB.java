@@ -21,6 +21,7 @@ HTreeMap mycache=cache.hashMap(cacheName)
 .expireMaxSize(10000)  //缓存容量
 .expireAfterGet(10, TimeUnit.SECONDS) // tti
 .expireAfterUpdate(10,TimeUnit.SECONDS).create(); //ttl 多久没有覆盖就回收
+//  mycache。put()  db.commit();
 
 }
 }
