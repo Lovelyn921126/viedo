@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ultrapower.viedo.dao.one.BrowseRecordDaoMapper">
+   <sql id="allBrowseRecord">
+   id id ,
+   vaild_status vaildStatus,
+   browse_time browseTime,
+   user_name userName,
+    viedo_id viedoId
+
+
+    </sql>
+   <select id="getBrowseRecordByUserId" parameterType="map" resultType="integer">   
+   SELECT 
+   count(*)
+    FROM vk_browse_record vkbr
+  <where>
+     <if test="viedoid =! null and viedoid != '' ">
+        vkbr.viedo_id=${viedoId}
+     </if>
+     <if test="username =! null and username != '' ">
+        vkbr.user_name=#{userName}
+     </if>
+     vkbr.vaild_status=1
+   </where>
+   </select>
+   <insert id="addBrowseRecord" parameterType="com.ultrapower.viedo.bean.BrowseRecord">
+    insert into vk_browse_record
+    (vaild_status,browse_time,user_name,viedo_id) 
+    
+    values(${vaildStatus},#{browseTime},#{userName},${viedoId})
+   
+   </insert>
+</mapper>

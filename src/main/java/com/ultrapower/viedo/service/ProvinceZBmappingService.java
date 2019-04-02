@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ultrapower.viedo.bean.ProvinceZBMapping;
-import com.ultrapower.viedo.dao.ProvinceZBMappingDao;
+import com.ultrapower.viedo.dao.one.ProvinceZBMappingDao;
 
 /**
  * <p>

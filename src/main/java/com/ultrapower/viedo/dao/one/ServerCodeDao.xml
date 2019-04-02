@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ultrapower.viedo.dao.one.ServerCodeDao">
+	
+	<sql id="allServerCode">
+	  ID_ Id,
+	  SYSTEM_NAME systemName,
+	  SYSTEM_CODE systemCode,
+	  SYSTEM_NAME_CODE  systemNameCode,
+	  ROWNUM count 
+	    
+	</sql>
+	<sql id="ServerCode">
+	   Id,
+	   systemName,
+	   systemCode,
+	   systemNameCode,
+	   count 
+	    
+	</sql>
+
+	<select id="getServerCode" parameterType="map" resultType="com.ultrapower.viedo.dao.one.ServerCodeDao">
+	 select <include refid="ServerCode"/> from 	 
+	  (
+	   select 
+	   <include refid="allServerCode"/>
+	    from SYSTEM_CODE
+	    <where>
+	      <if test=" systemName != null and systemName != '' ">
+	         SYSTEM_NAME =#{systemName}
+	      </if>
+	       <if test=" Id != null and Id != '' ">
+	       and  ID_ =#{Id}
+	      </if>
+	       <if test=" systemCode != null and systemCode != '' ">
+	       and  SYSTEM_CODE =#{systemCode}
+	      </if>
+	    </where>)
+          <where>
+	      <if test="pageSize != null and pageSize != '' ">
+	        count between #{pageNum} and #{pageSize}      
+	      </if>
+	    
+	    </where>
+	</select>
+		<select id="getServerCodeCount" parameterType="map" resultType="integer">
+	   select 
+	    count(*)
+	    from SYSTEM_CODE
+	    <where>
+	      <if test=" systemName != null and systemName != '' ">
+	         SYSTEM_NAME =#{systemName}
+	      </if>
+	       <if test=" Id != null and Id != '' ">
+	       and  ID_ =#{Id}
+	      </if>
+	       <if test=" systemCode != null and systemCode != '' ">
+	       and  SYSTEM_CODE =#{systemCode}
+	      </if>
+	    </where>
+	     <if test=" pageSize != null and pageSize != '' ">
+	       limit #{pageNum},#{pageSize}
+	      </if>
+	</select>
+	<insert id="addServerCode" parameterType="com.ultrapower.viedo.dao.one.ServerCodeDao">
+	  insert into SYSTEM_CODE(ID_,SYSTEM_NAME,SYSTEM_CODE,SYSTEM_NAME_CODE)values(seqSystem.nextval,#{systemName},#{systemCode},#{systemNameCode})
+	</insert>
+	<delete id="deleteServerCode" parameterType="map">
+	   delete from SYSTEM_CODE 
+	   <where>
+	   <if test=" systemName != null and systemName != '' ">
+	         SYSTEM_NAME =#{systemName}
+	      </if>
+	       <if test=" Id != null and Id != '' ">
+	        and ID_ =#{Id}
+	      </if>
+	       <if test=" systemCode != null and systemCode != '' ">
+	       and  SYSTEM_CODE =#{systemCode}
+	      </if>
+	   </where>
+	</delete>
+	<update id="updateServerCode" parameterType="map">
+	  update SYSTEM_CODE
+	  <set>
+	  <if test=" systemName != null and systemName != '' ">
+	         SYSTEM_NAME =#{systemName},
+	      </if>
+	       <if test=" systemCode != null and systemCode != '' ">
+	         SYSTEM_CODE =#{systemCode}
+	      </if>    
+	  </set>	
+	</update>
+	
+</mapper>

@@ -15,8 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ultrapower.viedo.bean.BrowseRecord;
-import com.ultrapower.viedo.dao.BrowseRecordDaoMapper;
-import com.ultrapower.viedo.dao.ViedoDetialDaoMapper;
+import com.ultrapower.viedo.dao.one.BrowseRecordDaoMapper;
+import com.ultrapower.viedo.dao.one.ViedoDetialDaoMapper;
 import com.ultrapower.viedo.utils.CommonExpection;
 
 /**

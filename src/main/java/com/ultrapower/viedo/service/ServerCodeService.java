@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ultrapower.viedo.bean.ServcerCode;
-import com.ultrapower.viedo.dao.ServerCodeDao;
+import com.ultrapower.viedo.dao.one.ServerCodeDao;
 
 /**
  * <p>

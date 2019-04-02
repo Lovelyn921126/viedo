@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ultrapower.viedo.dao.one.ViedoClassifyDaoMapper">
+   <sql id="allClassify">
+
+    vkc.id id,
+    vkc.classify_name classifyName,
+    vkc.create_time createTime,
+    vkc.vaild_status vaildStatus,
+    vkc.`level` level,
+    vkc.parent_id parentId,
+    vkc.way way
+
+    </sql>
+   <select id="getViedoClassify" parameterType="map" resultType="com.ultrapower.viedo.bean.ViedoClassify">
+   
+    select
+    <include refid="allClassify"/>
+    from  vk_classify vkc
+    <where>
+      <if test="parentid != null and parentid != '' ">
+        vkc.parent_id=#{parentId}
+      </if>
+       <if test="id != null and id != '' ">
+     and   vkc.id=#{id}
+      </if>
+      <if test="level != null and level != '' ">
+     and   vkc.level=#{level}
+      </if>
+     and  vaild_status=1
+    </where>
+ 
+   
+   </select>
+<select id="getViedoClassifyById" parameterType="map" resultType="com.ultrapower.viedo.bean.ViedoClassify">
+
+    select
+    <include refid="allClassify"/>
+    from  vk_classify vkc
+    <where>
+       <if test="id != null and id != '' ">
+     and   vkc.id=#{id}
+      </if>
+     and  vaild_status=1 
+     limit 0,1
+    </where>
+
+</select>
+
+</mapper>

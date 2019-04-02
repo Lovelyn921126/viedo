@@ -16,8 +16,8 @@ import org.springframework.stereotype.Service;
 
 import com.ultrapower.viedo.bean.PraiseRecord;
 import com.ultrapower.viedo.constants.ViedoSystemResult;
-import com.ultrapower.viedo.dao.PariseRecordDaoMapper;
-import com.ultrapower.viedo.dao.ViedoDetialDaoMapper;
+import com.ultrapower.viedo.dao.one.PariseRecordDaoMapper;
+import com.ultrapower.viedo.dao.one.ViedoDetialDaoMapper;
 import com.ultrapower.viedo.vo.RepData;
 
 /**

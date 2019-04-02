@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper  namespace="com.ultrapower.viedo.dao.one.ProvinceSynchroDemandDao">
+	<sql id="allProvinceSynchroDemand">
+   id id,
+   process_num   processNum,
+   title_   title, 
+   content_  content,
+   province_code   provinceCode,
+   province_name   provinceName, 
+   systype_super   systypeSuper,
+   systype1   systype1,
+   systype2   systype2, 
+   systype3   systype3,
+   create_date   createDate,
+   creator_nick   creatorNick,
+   creator_account   creatorAccount, 
+   create_email   createEmail,
+   create_phone   createPhone,
+   create_org_name   createOrgName,
+   city_code   cityCode, 
+   city_name   cityName, 
+   manager_demand_level   managerDemandLevel, 
+   current_task   currentTask,
+   current_handle_nick   currentHandleNick, 
+   current_handle_account   currentHandleAccount,
+   current_handle_email   currentHandleEmail,
+   current_handle_phone   currentHandlePhone, 
+   current_handle_org_name   currentHandleOrgName, 
+   current_handle_level   currentHandleLevel, 
+   current_handle_start_date   currentHandleStartDate,
+   handle_all_time   handleAllTime, 
+   staisfy_degree   staisfyDegree,
+   is_over_time   isOverTime,
+   over_time   overTime,
+   feed_back_content   feedBackContent, 
+   is_upgrade   isUpgrade, 
+   upgrade_date   upgradeDate,
+   upgrade_content   upgradeContent, 
+   upgrade_nick   upgradeNick,
+   upgrade_account   upgradeAccount, 
+   upgrade_email   upgradeEmail,
+   upgrade_phone   upgradePhone, 
+   upgrade_org_name   upgradeOrgName, 
+   upgrade_reply_content   upgradeReplyContent, 
+   upgrade_reply_date   upgradeReplyDate	
+	</sql>
+
+	<insert id="addProvinceSynchroDemand" parameterType="com.ultrapower.viedo.bean.ProvinceSynchroDemand">
+	 replace into province_synchro_demand (process_num,title_,content_,province_code,province_name,systype_super,systype1,
+	 systype2,systype3,create_date,creator_nick,creator_account,create_email,create_phone,create_org_name,city_code,
+	 city_name,manager_demand_level,current_task,current_handle_nick,current_handle_account,current_handle_email,
+	 current_handle_phone,current_handle_org_name,current_handle_level,current_handle_start_date,handle_all_time,
+	 staisfy_degree,is_over_time,over_time,feed_back_content,is_upgrade,upgrade_date,upgrade_content,upgrade_nick,
+	 upgrade_account,upgrade_email,upgrade_phone,upgrade_org_name,upgrade_reply_content,upgrade_reply_date)
+	 values(#{processNum}, #{title}, #{content}, #{provinceCode}, #{provinceName}, #{systypeSuper},#{systype1},
+      #{systype2}, #{systype3},#{createDate}, #{creatorNick},#{creatorAccount},  #{createEmail},#{createPhone},#{createOrgName},#{cityCode}, 
+      #{cityName},  #{managerDemandLevel},#{currentTask}, #{currentHandleNick}, #{currentHandleAccount}, #{currentHandleEmail},
+      #{currentHandlePhone}, #{currentHandleOrgName},  #{currentHandleLevel},  #{currentHandleStartDate}, #{handleAllTime}, 
+      #{staisfyDegree},#{isOverTime}, #{overTime}, #{feedBackContent}, #{isUpgrade}, #{upgradeDate},#{upgradeContent}, #{upgradeNick},
+      #{upgradeAccount}, #{upgradeEmail},#{upgradePhone}, #{upgradeOrgName}, #{upgradeReplyContent}, #{upgradeReplyDate})
+	</insert>
+</mapper>

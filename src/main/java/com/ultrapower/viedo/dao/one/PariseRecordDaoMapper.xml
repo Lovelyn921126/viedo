@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ultrapower.viedo.dao.one.PariseRecordDaoMapper">
+   <sql id="allPariseRecord">
+   id id ,
+   vaild_status vaildStatus,
+   praise_time praiseTime,
+   user_name userName,
+    viedo_id viedoId
+
+    </sql>
+   <select id="getPariseRecord" parameterType="map" resultType="com.ultrapower.viedo.bean.PraiseRecord">   
+   SELECT 
+   <include refid="allPariseRecord"/>
+    FROM vk_praise_record vkpr
+   <where>
+     <if test="viedoId =! null and viedoId != '' ">
+        vkpr.viedo_id=${viedoId}
+     </if>
+     <if test="userName =! null and userName != '' ">
+        vkpr.user_name=#{userName}
+     </if>
+     vkpr.vaild_status=1
+   </where>
+   </select>
+      <select id="getPariseRecordCountByUserId" parameterType="map" resultType="integer">   
+   SELECT 
+   count(*)
+    FROM vk_praise_record vkpr
+   <where>
+     
+        vkpr.viedo_id=${viedoId}
+    
+    
+      and  vkpr.user_name=#{userName}
+    
+      and vkpr.vaild_status=1
+   </where>
+   </select>
+   <insert id="addPariseRecord" parameterType="com.ultrapower.viedo.bean.PraiseRecord">
+    insert into vk_praise_record
+    (vaild_status,praise_time,user_name,viedo_id) 
+    
+    values(${vaildStatus},#{praiseTime},#{userName},${viedoId})
+   
+   </insert>
+</mapper>
