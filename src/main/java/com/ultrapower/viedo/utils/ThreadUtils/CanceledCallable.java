@@ -10,8 +10,6 @@ import java.util.concurrent.Callable;
 
 import javax.servlet.AsyncContext;
 
-import org.springframework.stereotype.Component;
-
 /**
  * <p>
  * Description:
@@ -31,7 +29,6 @@ import org.springframework.stereotype.Component;
  * @since
  * @see
  */
-@Component
 public class CanceledCallable implements Callable<Object> {
     private AsyncContext asyncContext;
     //private int milliseconds;

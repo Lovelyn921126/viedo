@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.ultrapower.viedo.bean.ViedoClassify;
 import com.ultrapower.viedo.constants.ViedoSystemResult;
-import com.ultrapower.viedo.dao.ViedoClassifyDaoMapper;
+import com.ultrapower.viedo.dao.one.ViedoClassifyDaoMapper;
 import com.ultrapower.viedo.vo.RepData;
 
 /**

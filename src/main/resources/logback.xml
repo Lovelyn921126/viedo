@@ -42,16 +42,20 @@
 			<MaxFileSize>10MB</MaxFileSize>
 		</triggeringPolicy>
 	</appender>
-	<logger name="com.ultrapower.viedo.service.UserInfoService" additivit="false">
+	<!-- <logger name="com.ultrapower.viedo.service.UserInfoService" additivit="false">
       <level value="error"/>
       <appender-ref ref="LOGFILE"/>
-	</logger>
-	<logger name="com.ultrapower.viedo.controller.TestController" additivit="false">
+	</logger> -->
+    <logger name="com.ultrapower.viedo" additivit="false">
+      <level value="debug"/>
+      <appender-ref ref="STDOUT"/>
+    </logger>
+	<!-- <logger name="com.ultrapower.viedo.controller.TestController" additivit="false">
       <level value="INFO"/>
       <appender-ref ref="LOGFILE"/>
-	</logger>
+	</logger> -->
 	<!-- 日志输出级别 -->
-	<root level="INFO">
-		<appender-ref ref="FILE" />
+	<root level="debug">
+		<appender-ref ref="STDOUT" />
 	</root>
 </configuration>

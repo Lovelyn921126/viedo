@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import com.ultrapower.viedo.bean.UserInfo;
-import com.ultrapower.viedo.dao.UserInfoDaoMapper;
+import com.ultrapower.viedo.dao.one.UserInfoDaoMapper;
 import com.ultrapower.viedo.utils.CLogger;
 import com.ultrapower.viedo.utils.CommonExpection;
 import com.ultrapower.viedo.vo.UserInfoCacheBean;

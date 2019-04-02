@@ -54,6 +54,7 @@ import lombok.extern.slf4j.Slf4j;
 public class OneLevelAsynContent {
 
     private AsyncListener asyncListener;
+
     ThreadPoolExecutor executor = null;
 
     public void submitFuture(final HttpServletRequest request, final Callable<Object> task) {

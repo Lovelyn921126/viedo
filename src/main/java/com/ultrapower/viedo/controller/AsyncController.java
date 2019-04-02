@@ -6,13 +6,12 @@
  */
 package com.ultrapower.viedo.controller;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+import com.ultrapower.viedo.service.AxService;
 import com.ultrapower.viedo.service.UserInfoService;
 import com.ultrapower.viedo.utils.ThreadUtils.OneLevelAsynContent;
 
@@ -38,15 +37,24 @@ import io.swagger.annotations.Api;
  * @see
  */
 @Api(value = "AsyncController-api")
-@Controller
+@RestController
 @RequestMapping("/AsyncController")
 public class AsyncController {
     @Autowired
     OneLevelAsynContent oneLevelAsynContent;
     @Autowired
     UserInfoService userInfoService;
+    @Autowired
+    AxService axService;
 
+    /* @RequestMapping("/getBook.do")
     public void getBook(HttpServletRequest request, @RequestParam("Id") final Integer Id) {
         oneLevelAsynContent.submitFuture(request, () -> userInfoService.get2(Id));
+    }*/
+
+    @GetMapping("/addStudent.do")
+    public String name() {
+        axService.name();
+        return "success";
     }
 }

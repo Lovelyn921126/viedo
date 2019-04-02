@@ -360,6 +360,11 @@
        <artifactId>atomikos-util</artifactId>
        <version>4.0.6</version>
    </dependency>
+   <dependency>
+       <groupId>org.mybatis.generator</groupId>
+       <artifactId>mybatis-generator-core</artifactId>
+       <version>1.3.6</version>
+   </dependency>
     </dependencies>
     <build>
         <finalName>viedo</finalName>
@@ -368,7 +373,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-           <!--  <plugin>
+           <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>0.4.13</version>
@@ -402,28 +407,28 @@
                     </execution>    
                 </executions>
                 <configuration>
-                    私有仓库配置，需要settings.xml文件配合serverId对应的服务地址
+                    <!-- 私有仓库配置，需要settings.xml文件配合serverId对应的服务地址 -->
                     <serverId>docker-aliyun</serverId>
                     <registryUrl>registry.cn-hangzhou.aliyuncs.com</registryUrl>
                     <forceTags>true</forceTags>
-                    install阶段也上传，否则只有deploy阶段上传
+                   <!--  install阶段也上传，否则只有deploy阶段上传 -->
                     <pushImage>true</pushImage>
                     <dockerDirectory>target/docker</dockerDirectory>
                     <imageName>
                         ${docker.repostory}/${docker.registry.name}/${project.artifactId}:${project.version}
                     </imageName>
                     <imageTags>
-                        docker的tag为项目版本号、latest
+                       <!--  docker的tag为项目版本号、latest -->
                         <imageTag>${git.commit.id.abbrev}</imageTag>
                         <imageTag>latest</imageTag>
                     </imageTags>
                     <resources>
-                        <rescource>将打包文件放入dockerDirectory指定的位置
+                        <rescource><!-- 将打包文件放入dockerDirectory指定的位置 -->
                             <targetPath>/</targetPath>
                             <directory>${project.build.directory}</directory>
                             <include>${project.build.finalName}.jar</include>
                         </rescource>
-                        输出Dockerfile至docker文件夹,如果不使用占位符,可使用以下配置
+                    <!--     输出Dockerfile至docker文件夹,如果不使用占位符,可使用以下配置 -->
                         
                         <resource>
                                <directory>src/main/docker</directory>
@@ -436,7 +441,23 @@
                           
                     </resources>
                 </configuration>
-            </plugin> -->
+            </plugin> 
+     <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.1.1</version>
+        <configuration>
+          <!-- put your configurations here -->
+        </configuration>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
 
 
 
