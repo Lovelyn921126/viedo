@@ -15,7 +15,7 @@ public class CacheUtils {
         if (value == null) {
             return;
         }
-        //复制对象 
+        //复制对象
         //本地缓存为引用 分布式需要序列化
         //如果不复制的话   则更新数据后 会造成 本地缓存与分布式不一致
         //复制
@@ -40,7 +40,7 @@ public class CacheUtils {
                 String key = keys.get(i);
                 Class type = values.get(i);
                 //获取本地缓存
-                Cache cache = GuavaCache.getCache();
+                Cache cache = GuavaCache.getDefaultCache();
                 if (cache != null) {
                     Object value = cache.getIfPresent(key);
                     result.put(key, value);
