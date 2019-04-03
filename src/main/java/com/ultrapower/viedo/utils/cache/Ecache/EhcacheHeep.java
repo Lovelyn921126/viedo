@@ -16,10 +16,8 @@ import org.ehcache.config.builders.CacheConfigurationBuilder;
 import org.ehcache.config.builders.CacheManagerBuilder;
 import org.ehcache.config.builders.ResourcePoolsBuilder;
 import org.ehcache.config.units.EntryUnit;
-import org.ehcache.config.units.MemoryUnit;
 import org.ehcache.expiry.Duration;
 import org.ehcache.expiry.Expirations;
-import org.ehcache.impl.config.loaderwriter.DefaultCacheLoaderWriterConfiguration;
 import org.ehcache.spi.loaderwriter.BulkCacheLoadingException;
 import org.ehcache.spi.loaderwriter.BulkCacheWritingException;
 import org.ehcache.spi.loaderwriter.CacheLoaderWriter;
@@ -52,48 +50,45 @@ public class EhcacheHeep {
         //MemoryUnit.MB 缓存的容量
         //withExpiry(Expirations.timeToLiveExpiration(Duration.of(10, TimeUnit.SECONDS))  设置TTL 即 缓存的写更新
         //timeToIdleExpiration    设置TTL,tti 即 缓存的写更新 跟读跟新
-        CacheManager cacheManager=CacheManagerBuilder.newCacheManagerBuilder().build();
-        CacheConfigurationBuilder<String, String> cacheConfig=CacheConfigurationBuilder
-        		.newCacheConfigurationBuilder(String.class,String.class,ResourcePoolsBuilder.newResourcePoolsBuilder().heap(100,EntryUnit.ENTRIES))
-        		.withDispatcherConcurrency(4).withExpiry(Expirations.timeToIdleExpiration(Duration.of(10, TimeUnit.SECONDS))).withLoaderWriter(new CacheLoaderWriter<String, String>() {
-					
-					@Override
-					public void writeAll(Iterable<? extends Entry<? extends String, ? extends String>> arg0)
-							throws BulkCacheWritingException, Exception {
-						// TODO Auto-generated method stub
-						
-					}
-					
-					@Override
-					public void write(String arg0, String arg1) throws Exception {
-						// TODO Auto-generated method stub
-						
-					}
-					
-					@Override
-					public Map<String, String> loadAll(Iterable<? extends String> arg0) throws BulkCacheLoadingException, Exception {
-						// TODO Auto-generated method stub
-						return null;
-					}
-					
-					@Override
-					public String load(String arg0) throws Exception {
-						// TODO Auto-generated method stub
-						return null;
-					}
-					
-					@Override
-					public void deleteAll(Iterable<? extends String> arg0) throws BulkCacheWritingException, Exception {
-						// TODO Auto-generated method stub
-						
-					}
-					
-					@Override
-					public void delete(String arg0) throws Exception {
-						// TODO Auto-generated method stub
-						
-					}
-				});
-        return  cacheManager.createCache(cacheName, cacheConfig);
+        CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder().build();
+        CacheConfigurationBuilder<String, String> cacheConfig = CacheConfigurationBuilder.newCacheConfigurationBuilder(String.class, String.class, ResourcePoolsBuilder.newResourcePoolsBuilder().heap(100, EntryUnit.ENTRIES)).withDispatcherConcurrency(4).withExpiry(Expirations.timeToIdleExpiration(Duration.of(10, TimeUnit.SECONDS))).withLoaderWriter(new CacheLoaderWriter<String, String>() {
+
+            @Override
+            public void writeAll(Iterable<? extends Entry<? extends String, ? extends String>> arg0) throws BulkCacheWritingException, Exception {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void write(String arg0, String arg1) throws Exception {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public Map<String, String> loadAll(Iterable<? extends String> arg0) throws BulkCacheLoadingException, Exception {
+                // TODO Auto-generated method stub
+                return null;
+            }
+
+            @Override
+            public String load(String arg0) throws Exception {
+                // TODO Auto-generated method stub
+                return null;
+            }
+
+            @Override
+            public void deleteAll(Iterable<? extends String> arg0) throws BulkCacheWritingException, Exception {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void delete(String arg0) throws Exception {
+                // TODO Auto-generated method stub
+
+            }
+        });
+        return cacheManager.createCache(cacheName, cacheConfig);
     }
 }
