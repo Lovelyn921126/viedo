@@ -121,8 +121,7 @@ public class GuavaCache {
              */
             @Override
             public int weigh(Object key, Object value) {
-                // TODO Auto-generated method stub
-                return 0;
+                return value.toString().length();
             }
         }).build();
     }
