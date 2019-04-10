@@ -151,4 +151,8 @@
    
 	<!-- <cache:annotation-driven/>
 	<import resource="classpath*:spring-echace.xml" /> -->
+    
+    <import resource="redis.xml" /> 
+   
+    
 </beans>

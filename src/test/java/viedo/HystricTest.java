@@ -90,7 +90,7 @@ public class HystricTest extends HystrixCommand<String> {
         HystrixThreadPoolKey threadPoolKey = HystrixThreadPoolKey.Factory.asKey("stock-pool");
         HystrixCollapserProperties.Setter collasper = HystrixCollapserProperties.Setter().withCollapsingEnabled(true).withMaxRequestsInBatch(Integer.MAX_VALUE).withTimerDelayInMilliseconds(10).withRequestCacheEnabled(true);
         HystrixThreadPoolProperties.Setter threadProperties = HystrixThreadPoolProperties.Setter().withCoreSize(200).withKeepAliveTimeMinutes(5).withMaxQueueSize(Integer.MAX_VALUE).withQueueSizeRejectionThreshold(10);
-        HystrixCommandProperties.Setter commandProperties = HystrixCommandProperties.Setter().withExecutionIsolationThreadTimeoutInMilliseconds(500).withExecutionIsolationStrategy(HystrixCommandProperties.ExecutionIsolationStrategy.THREAD).withCircuitBreakerEnabled(true).withCircuitBreakerErrorThresholdPercentage(50).withCircuitBreakerRequestVolumeThreshold(6);
+        HystrixCommandProperties.Setter commandProperties = HystrixCommandProperties.Setter().withRequestCacheEnabled(true).withExecutionIsolationThreadTimeoutInMilliseconds(500).withExecutionIsolationStrategy(HystrixCommandProperties.ExecutionIsolationStrategy.THREAD).withCircuitBreakerEnabled(true).withCircuitBreakerErrorThresholdPercentage(50).withCircuitBreakerRequestVolumeThreshold(6);
         // return HystrixCommand.Setter.withGroupKey(groupKey).andCommandKey(commandKey).andThreadPoolKey(threadPoolKey).andThreadPoolPropertiesDefaults(threadProperties).andCommandPropertiesDefaults(commandProperties);
         return HystrixCommand.Setter.withGroupKey(groupKey).andCommandKey(commandKey).andCommandPropertiesDefaults(commandProperties);
     }

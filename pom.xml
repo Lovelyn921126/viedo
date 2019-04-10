@@ -374,7 +374,22 @@
      <groupId>org.mapdb</groupId>
      <artifactId>mapdb</artifactId>
      <version>3.0.7</version>
-   </dependency> 
+   </dependency>
+   <dependency>
+   	<groupId>com.lmax</groupId>
+   	<artifactId>disruptor</artifactId>
+   	<version>3.3.6</version>
+   </dependency>
+   <dependency>
+       <groupId>redis.clients</groupId>
+       <artifactId>jedis</artifactId>
+       <version>2.9.0</version>
+   </dependency>
+   <dependency>
+       <groupId>org.springframework.data</groupId>
+       <artifactId>spring-data-redis</artifactId>
+       <version>2.1.3.RELEASE</version>
+   </dependency>
     </dependencies>
     <build>
         <finalName>viedo</finalName>
