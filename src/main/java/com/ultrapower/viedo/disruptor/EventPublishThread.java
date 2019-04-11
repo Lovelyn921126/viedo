@@ -6,6 +6,7 @@
  */
 package com.ultrapower.viedo.disruptor;
 
+import com.lmax.disruptor.EventTranslator;
 import com.lmax.disruptor.RingBuffer;
 
 /**
@@ -33,16 +34,16 @@ import com.lmax.disruptor.RingBuffer;
 public class EventPublishThread extends Thread {
 
     private EventQueue eventQueue;
-    private RingBuffer ringBuffer;
+    private RingBuffer<Event> ringBuffer;
     private String eventType;
 
-    public EventPublishThread(String eventType, EventQueue eventQueue, RingBuffer ringBuffer) {
-		this.ringBuffer=ringBuffer;
-		this.eventQueue=eventQueue;
-		this.eventType=eventType;
-	}
+    public EventPublishThread(String eventType, EventQueue eventQueue, RingBuffer<Event> ringBuffer) {
+        this.ringBuffer = ringBuffer;
+        this.eventQueue = eventQueue;
+        this.eventType = eventType;
+    }
 
-	/* (non-Javadoc)
+    /* (non-Javadoc)
     * @see java.lang.Thread#run()
     */
     @Override
@@ -54,13 +55,19 @@ public class EventPublishThread extends Thread {
 
             }
             if (nextKey != null) {
-                ringBuffer.publishEvent(event_tr, nextKey, eventType);
+                final String key = nextKey;
+                EventTranslator<Event> eventTranslator = (EventTranslator<Event>) (event, sequence) -> {
+                    event.setEventType(eventType);
+                    event.setKey(key);
+                };
+                //ringBuffer.publishEvent(event_tr, nextKey, eventType);
+                ringBuffer.publishEvent(eventTranslator);
             }
         }
     }
-    
-	public void shutdown() {
-		// TODO Auto-generated method stub
-		
-	}
+
+    public void shutdown() {
+        // TODO Auto-generated method stub
+
+    }
 }

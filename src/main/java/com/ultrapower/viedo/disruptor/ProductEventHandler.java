@@ -31,14 +31,11 @@ import com.lmax.disruptor.EventHandler;
  * @see
  */
 public class ProductEventHandler implements EventHandler<Event> {
-	AtomicLong  atomicLong=new  AtomicLong();
+    AtomicLong atomicLong = new AtomicLong();
 
-	@Override
-	public void onEvent(Event event, long sequence, boolean endOfBatch) throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void onEvent(Event event, long sequence, boolean endOfBatch) throws Exception {
 
-  
+    }
 
 }
