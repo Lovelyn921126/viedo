@@ -12,6 +12,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.data.redis.serializer.RedisSerializer;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * <p>
  * Description:
@@ -31,6 +33,7 @@ import org.springframework.data.redis.serializer.RedisSerializer;
  * @since
  * @see
  */
+@Slf4j
 public class EventQueueScript {
     private static String script;
 
@@ -57,6 +60,7 @@ public class EventQueueScript {
     }
 
     public void exec(RedisTemplate<String, String> redisTemplate, List<String> list, String id) {
+    	log.info("EventQueueScript----------exec contain ID");
         DefaultRedisScript<String> redisScript = new DefaultRedisScript<>();
         redisScript.setScriptText(script);
         redisScript.setResultType(String.class);
@@ -65,6 +69,7 @@ public class EventQueueScript {
     }
 
     public void exec(RedisTemplate<String, String> redisTemplate, List<String> list) {
+    	log.info("EventQueueScript----------exec not ID");
         DefaultRedisScript<String> redisScript = new DefaultRedisScript<>();
         redisScript.setScriptText(script);
         redisScript.setResultType(String.class);

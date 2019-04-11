@@ -20,6 +20,8 @@ import com.lmax.disruptor.WorkHandler;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * <p>
  * Description:
@@ -39,6 +41,7 @@ import com.lmax.disruptor.dsl.ProducerType;
  * @since
  * @see
  */
+@Slf4j
 public class EventWorker {
 
     private Integer threadPoolSize;
@@ -51,6 +54,8 @@ public class EventWorker {
 
     @SuppressWarnings("deprecation")
     public void init() {
+    	System.out.println("EventWorker---init----");
+    	log.info("EventWorker---init----");
         //Disruptor 通过 java.util.concurrent.ExecutorService 提供的线程来触发 Consumer 的事件处理
         //指定等待策略
         /*Disruptor 定义了 com.lmax.disruptor.WaitStrategy 接口用于抽象 Consumer 如何等待新事件，这是策略模式的应用。
@@ -87,10 +92,10 @@ public class EventWorker {
         WorkHandler<Event> workHandler = new WorkHandler<Event>() {
             @Override
             public void onEvent(Event event) throws Exception {
-                String type = event.getEventType();
+                String type = event.getEventType();      
                 EventQueue queue = eventQueueMap.get(type);
                 EventHandler<Event> handler = enentHandleMap.get(queue);
-                handler.onEvent(event, new Sequence().get(), true);
+                handler.onEvent(event,Long.valueOf(event.getKey()) , true);
             };
         };
         WorkHandler<Event>[] workHandlers = new WorkHandler[threadPoolSize];
@@ -110,7 +115,7 @@ public class EventWorker {
 
     public void stop() {
         for (EventPublishThread eventPublishThread : eventPublishThreads) {
-            eventPublishThread.shutdown();
+            eventPublishThread.stop();
         }
         disruptor.shutdown();
     }

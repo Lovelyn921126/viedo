@@ -13,6 +13,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Component;
 
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.Lists;
@@ -37,6 +38,7 @@ import com.ultrapower.viedo.utils.cache.gauvaCache.GuavaCache;
  * @since
  * @see
  */
+@Component
 public class EventQueue {
     /**
      * 本地的redis 客户端
@@ -77,10 +79,14 @@ public class EventQueue {
     //通过lrem 先删除 然后在通过lpush 进行重排  如果大于10000 因为遍历list性能会变的很差 则此时 不会进行排重
     //数据同时 会被放入 则 此时不会进行排重 数据同时放入 备份队列 当队列满了时  使用 FIFO 移除最新插入的的任务
     final static EventQueueScript ENQUEUE_TO_LIFT_REIDS_SCRIPT = new EventQueueScript("local remCount=0" + "if redis.call('llen',KEYS[1])<10000 " + "then remCount=redis.call('lrem',KEYS[1],1,KEYS[2]) end " + "redis.call('lpush',KEYS[1],KEYS[2])" + "if tonumber(KEYS[4])<0" + "then return nil end" + "local len=redis.call('llen',KEYS[3])" + "if len >tonumber(KEYS[4])" + "then redis.call('lpop',KEYS[3]) end" + "redis.call('rpush',KEYS[3],KEYS[2])");
-    //添加等待队列 到队尾
-    final static EventQueueScript ADD_TO_BACK_REDIS_SCRIPT = new EventQueueScript("redis.call('RPUSH',KEYS[1],KEYS[2])");
-    //如果超过重试次数 则 加入失败队列
-    final static EventQueueScript ADD_TO_FAIL_QUEUE_REIDS_SCRIPT = new EventQueueScript("redis.call('RPUSH',KEYS[1],KEYS[2])");
+    /**
+     * 添加等待队列 到队尾
+     */
+    final static EventQueueScript ADD_TO_BACK_REDIS_SCRIPT = new EventQueueScript("redis.call('lrem',KEYS[1],AVGS[1]),redis.call('RPUSH',KEYS[1],KEYS[2])");
+    /**
+     * 如果超过重试次数 则 加入失败队列
+     */
+    final static EventQueueScript ADD_TO_FAIL_QUEUE_REIDS_SCRIPT = new EventQueueScript("redis.call('lrem',KEYS[1],AVGS[1]),redis.call('RPUSH',KEYS[1],KEYS[2])");
 
     /**
      * @return the redisTemplate
@@ -169,7 +175,7 @@ public class EventQueue {
     }
 
     public void enqueueToBack(final String id) {
-        ENQUEUE_TO_LIFT_REIDS_SCRIPT.exec(redisTemplate, Lists.newArrayList(queueName, id, bakQueueName));
+        ENQUEUE_TO_LIFT_REIDS_SCRIPT.exec(redisTemplate, Lists.newArrayList(queueName, id, bakQueueName,"4000"));
     }
 
     /**

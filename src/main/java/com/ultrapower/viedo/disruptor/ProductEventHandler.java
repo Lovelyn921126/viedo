@@ -6,9 +6,12 @@
  */
 package com.ultrapower.viedo.disruptor;
 
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicLong;
 
 import com.lmax.disruptor.EventHandler;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * <p>
@@ -30,12 +33,33 @@ import com.lmax.disruptor.EventHandler;
  * @since
  * @see
  */
+@Slf4j
 public class ProductEventHandler implements EventHandler<Event> {
     AtomicLong atomicLong = new AtomicLong();
+    
+    private EventQueue eventQueue;
 
-    @Override
-    public void onEvent(Event event, long sequence, boolean endOfBatch) throws Exception {
-        System.out.println(event.getEventType() + "----" + event.getKey());
+    public EventQueue getEventQueue() {
+		return eventQueue;
+	}
+
+	public void setEventQueue(EventQueue eventQueue) {
+		this.eventQueue = eventQueue;
+	}
+
+	@Override
+    public void onEvent(Event event, long sequence, boolean endOfBatch) throws ExecutionException  {
+		log.info("ProductEventHandler---onEvent");
+    	try {
+    		
+    		eventQueue.success(String.valueOf(sequence) );
+    		log.info("ProductEventHandler---success");
+            System.out.println(event.getEventType() + "----" + event.getKey());
+		} catch (Exception e) {
+			log.info("ProductEventHandler---fail");
+			eventQueue.fail(String.valueOf(sequence));
+		}
+    	
     }
 
 }

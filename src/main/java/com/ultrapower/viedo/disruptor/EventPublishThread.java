@@ -66,8 +66,5 @@ public class EventPublishThread extends Thread {
         }
     }
 
-    public void shutdown() {
-        // TODO Auto-generated method stub
-
-    }
+  
 }

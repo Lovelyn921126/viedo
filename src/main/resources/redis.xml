@@ -40,15 +40,20 @@
       </property>
       <property name="enableTransactionSupport" value="true"/>
     </bean>
+    <bean class="com.ultrapower.viedo.utils.cache.RedisUtils">
+     <property name="redisTemplate" ref="redisTemple"/>
+    </bean>
      <!-- disruptor -->
      <!-- eventQueue -->
     <bean id="productEventQueue" class="com.ultrapower.viedo.disruptor.EventQueue">
       <property name="maxBakSize" value="20000000"/>
-      <property name="queueName"  value="product"/>
+      <property name="queueName"  value="productWait"/>
       <property name="processingErrorRetryCount" value="2"/>
       <property name="redisTemplate" ref="redisTemple"/>
     </bean>
-    <bean id="productEventHandle" class="com.ultrapower.viedo.disruptor.ProductEventHandler"/>
+    <bean id="productEventHandle" class="com.ultrapower.viedo.disruptor.ProductEventHandler">
+     <property name="eventQueue" ref="productEventQueue"/>
+    </bean>
     
     <bean id="productEventWork" class="com.ultrapower.viedo.disruptor.EventWorker" init-method="init" destroy-method="stop">
       <property name="ringBufferSize" value="4096"/>
