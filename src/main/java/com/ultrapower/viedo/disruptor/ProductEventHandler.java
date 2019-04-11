@@ -6,11 +6,14 @@
  */
 package com.ultrapower.viedo.disruptor;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 import com.lmax.disruptor.EventHandler;
 
 /**
  * <p>
- * Description:
+ * Description:  定义事件处理的具体实现
+ *                   通过实现接口 com.lmax.disruptor.EventHandler<T> 定义事件处理的具体实现
  * </p>
  *
  * @author dell
@@ -27,15 +30,15 @@ import com.lmax.disruptor.EventHandler;
  * @since
  * @see
  */
-public class ProductEventHandler implements EventHandler<EventQueue> {
+public class ProductEventHandler implements EventHandler<Event> {
+	AtomicLong  atomicLong=new  AtomicLong();
 
-    /* (non-Javadoc)
-     * @see com.lmax.disruptor.EventHandler#onEvent(java.lang.Object, long, boolean)
-     */
-    @Override
-    public void onEvent(EventQueue event, long sequence, boolean endOfBatch) throws Exception {
-        // TODO Auto-generated method stub
+	@Override
+	public void onEvent(Event event, long sequence, boolean endOfBatch) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
 
-    }
+  
 
 }

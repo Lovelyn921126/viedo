@@ -10,7 +10,10 @@ import com.lmax.disruptor.RingBuffer;
 
 /**
  * <p>
- * Description:
+ * Description:  定义事件工厂
+ *  事件工厂(Event Factory)定义了如何实例化前面第1步中定义的事件(Event)，需要实现接口 com.lmax.disruptor.EventFactory<T>。
+ *   Disruptor 通过 EventFactory 在 RingBuffer 中预创建 Event 的实例。
+ *   一个 Event 实例实际上被用作一个“数据槽”，发布者发布前，先从 RingBuffer 获得一个 Event 的实例，然后往 Event 实例中填充数据，之后再发布到 RingBuffer 中，之后由 Consumer 获得该 Event 实例并从中读取数据。
  * </p>
  *
  * @author dell
@@ -31,8 +34,15 @@ public class EventPublishThread extends Thread {
 
     private EventQueue eventQueue;
     private RingBuffer ringBuffer;
+    private String eventType;
 
-    /* (non-Javadoc)
+    public EventPublishThread(String eventType, EventQueue eventQueue, RingBuffer ringBuffer) {
+		this.ringBuffer=ringBuffer;
+		this.eventQueue=eventQueue;
+		this.eventType=eventType;
+	}
+
+	/* (non-Javadoc)
     * @see java.lang.Thread#run()
     */
     @Override
@@ -44,8 +54,13 @@ public class EventPublishThread extends Thread {
 
             }
             if (nextKey != null) {
-                ringBuffer.publishEvent(event_tr, nextKey, e);
+                ringBuffer.publishEvent(event_tr, nextKey, eventType);
             }
         }
     }
+    
+	public void shutdown() {
+		// TODO Auto-generated method stub
+		
+	}
 }

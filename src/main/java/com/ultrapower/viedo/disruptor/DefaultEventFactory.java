@@ -35,7 +35,7 @@ public class DefaultEventFactory implements EventFactory<Event> {
     @Override
     public Event newInstance() {
         // TODO Auto-generated method stub
-        return null;
+        return new Event();
     }
 
 }

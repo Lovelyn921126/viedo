@@ -8,7 +8,7 @@ package com.ultrapower.viedo.disruptor;
 
 /**
  * <p>
- * Description:
+ * Description: 定义事件   事件(Event)就是通过 Disruptor 进行交换的数据类型
  * </p>
  *
  * @author dell
