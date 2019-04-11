@@ -150,7 +150,7 @@ public class EventQueue {
             if (id != null) {
                 return id;
             }
-            lock.lock();
+            //lock.lock();
         }
     }
 

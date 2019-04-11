@@ -35,7 +35,7 @@ public class ProductEventHandler implements EventHandler<Event> {
 
     @Override
     public void onEvent(Event event, long sequence, boolean endOfBatch) throws Exception {
-
+        System.out.println(event.getEventType() + "----" + event.getKey());
     }
 
 }

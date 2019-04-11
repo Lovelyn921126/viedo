@@ -35,7 +35,10 @@ public class DefaultEventFactory implements EventFactory<Event> {
     @Override
     public Event newInstance() {
         // TODO Auto-generated method stub
-        return new Event();
+        Event event = new Event();
+        event.setEventType("product");
+        event.setKey("key");
+        return event;
     }
 
 }
