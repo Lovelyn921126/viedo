@@ -9,6 +9,8 @@ package com.ultrapower.viedo.disruptor;
 import com.lmax.disruptor.EventTranslator;
 import com.lmax.disruptor.RingBuffer;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * <p>
  * Description:  定义事件工厂
@@ -31,6 +33,7 @@ import com.lmax.disruptor.RingBuffer;
  * @since
  * @see
  */
+@Slf4j
 public class EventPublishThread extends Thread {
 
     private EventQueue eventQueue;
@@ -48,11 +51,13 @@ public class EventPublishThread extends Thread {
     */
     @Override
     public void run() {
+        System.out.println("EventPublishThread---run");
+        log.info("EventPublishThread---run");
         while (true) {
             String nextKey = null;
             if (nextKey == null) {
                 nextKey = eventQueue.next();
-
+                log.info("EventPublishThread---run---nextKey=" + nextKey);
             }
             if (nextKey != null) {
                 final String key = nextKey;
@@ -66,5 +71,4 @@ public class EventPublishThread extends Thread {
         }
     }
 
-  
 }

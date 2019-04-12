@@ -6,7 +6,7 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
-	<import resource="config" />
+	<!-- <import resource="config" /> -->
 		<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
 			<list>
@@ -120,4 +120,5 @@
         <property name="sqlSessionFactoryBeanName" value="sqlsessionFactoryTwo" />
         <property name="basePackage" value="com.ultrapower.viedo.dao.two"></property>
     </bean>
+    <import resource="redis.xml" /> 
 </beans> 

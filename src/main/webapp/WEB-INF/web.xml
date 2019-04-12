@@ -37,8 +37,8 @@
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<!--  <param-value>classpath*:spring.xml</param-value> -->
-         <param-value>classpath*:spring-jtp-atomikos.xml</param-value>
-         <!-- <param-value>classpath*:spring-druid-atomikos.xml</param-value> -->
+        <!--  <param-value>classpath*:spring-jtp-atomikos.xml</param-value> -->
+         <param-value>classpath*:spring-druid-atomikos.xml</param-value>
 	</context-param>
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
@@ -49,7 +49,7 @@
         <url-pattern>/swagger-ui.html</url-pattern>
     </servlet-mapping>
 	<!-- 监听dwr -->
-	 <servlet> 
+<!-- 	 <servlet> 
         <servlet-name>dwr-invoker</servlet-name> 
         <servlet-class> 
             org.directwebremoting.servlet.DwrServlet 
@@ -79,7 +79,7 @@
     <servlet-mapping> 
         <servlet-name>dwr-invoker</servlet-name> 
         <url-pattern>/dwr/*</url-pattern> 
-    </servlet-mapping> 
+    </servlet-mapping>  -->
 
 
 	<servlet>

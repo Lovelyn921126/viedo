@@ -14,9 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ultrapower.viedo.disruptor.EventQueue;
-import com.ultrapower.viedo.service.AxService;
-import com.ultrapower.viedo.service.UserInfoService;
-import com.ultrapower.viedo.utils.ThreadUtils.OneLevelAsynContent;
 
 import io.swagger.annotations.Api;
 
@@ -46,7 +43,6 @@ public class DisruptorController {
     @Autowired
     EventQueue eventQueue;
 
-
     /* @RequestMapping("/getBook.do")
     public void getBook(HttpServletRequest request, @RequestParam("Id") final Integer Id) {
         oneLevelAsynContent.submitFuture(request, () -> userInfoService.get2(Id));
@@ -54,7 +50,8 @@ public class DisruptorController {
 
     @GetMapping("/addStudent.do")
     public void name() {
-    	Random random=new Random();
+        Random random = new Random();
+
         eventQueue.enqueueToBack(String.valueOf(random.nextLong()));
     }
 }

@@ -13,7 +13,6 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Component;
 
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.Lists;
@@ -38,7 +37,6 @@ import com.ultrapower.viedo.utils.cache.gauvaCache.GuavaCache;
  * @since
  * @see
  */
-@Component
 public class EventQueue {
     /**
      * 本地的redis 客户端
@@ -60,15 +58,15 @@ public class EventQueue {
     /**
      * 本地处理队列
      */
-    private String processingQueueName = queueName + "_processing_queue_" + localIp;
+    private String processingQueueName;
     /**
      *  失败队列的名称
      */
-    private String failQueueName = queueName + "_failed_queue";
+    private String failQueueName;
     /**
      *  备份队列的名称
      */
-    private String bakQueueName = queueName + "_bak_queue_" + LocalTime.now().getHour();
+    private String bakQueueName;
     /**
      * 记录是吧的次数
      */
@@ -78,15 +76,15 @@ public class EventQueue {
     //如果等待队列 小于10000 则会进行重拍
     //通过lrem 先删除 然后在通过lpush 进行重排  如果大于10000 因为遍历list性能会变的很差 则此时 不会进行排重
     //数据同时 会被放入 则 此时不会进行排重 数据同时放入 备份队列 当队列满了时  使用 FIFO 移除最新插入的的任务
-    final static EventQueueScript ENQUEUE_TO_LIFT_REIDS_SCRIPT = new EventQueueScript("local remCount=0" + "if redis.call('llen',KEYS[1])<10000 " + "then remCount=redis.call('lrem',KEYS[1],1,KEYS[2]) end " + "redis.call('lpush',KEYS[1],KEYS[2])" + "if tonumber(KEYS[4])<0" + "then return nil end" + "local len=redis.call('llen',KEYS[3])" + "if len >tonumber(KEYS[4])" + "then redis.call('lpop',KEYS[3]) end" + "redis.call('rpush',KEYS[3],KEYS[2])");
+    final static EventQueueScript ENQUEUE_TO_LIFT_REIDS_SCRIPT = new EventQueueScript("local remCount=0 " + "if redis.call('llen',KEYS[1])<10000 " + "then remCount=redis.call('lrem',KEYS[1],1,KEYS[2]) end " + "redis.call('lpush',KEYS[1],KEYS[2]) " + "if tonumber(KEYS[4])<0 " + "then return nil end " + "local len=redis.call('llen',KEYS[3]) " + "if len >tonumber(KEYS[4]) " + "then redis.call('lpop',KEYS[3]) end " + "redis.call('rpush',KEYS[3],KEYS[2])");
     /**
      * 添加等待队列 到队尾
      */
-    final static EventQueueScript ADD_TO_BACK_REDIS_SCRIPT = new EventQueueScript("redis.call('lrem',KEYS[1],AVGS[1]),redis.call('RPUSH',KEYS[1],KEYS[2])");
+    final static EventQueueScript ADD_TO_BACK_REDIS_SCRIPT = new EventQueueScript("redis.call('lrem',KEYS[1],ARGV[1]) " + "redis.call('RPUSH',KEYS[2],ARGV[1])");
     /**
      * 如果超过重试次数 则 加入失败队列
      */
-    final static EventQueueScript ADD_TO_FAIL_QUEUE_REIDS_SCRIPT = new EventQueueScript("redis.call('lrem',KEYS[1],AVGS[1]),redis.call('RPUSH',KEYS[1],KEYS[2])");
+    final static EventQueueScript ADD_TO_FAIL_QUEUE_REIDS_SCRIPT = new EventQueueScript("redis.call('lrem',KEYS[1],ARGV[1]) " + "redis.call('RPUSH',KEYS[2],ARGV[1])");
 
     /**
      * @return the redisTemplate
@@ -150,9 +148,11 @@ public class EventQueue {
      * @return
      */
     public String next() {
+        System.out.println("eventQueue----next");
         while (true) {
             //将任务 从等待队列 移入 本地处理队列
-            String id = redisTemplate.opsForList().rightPopAndLeftPush(queueName, processingQueueName);
+            String id = redisTemplate.opsForList().rightPopAndLeftPush(queueName, getProcessingQueueName());
+
             if (id != null) {
                 return id;
             }
@@ -161,28 +161,28 @@ public class EventQueue {
     }
 
     public void success(String id) {
-        redisTemplate.opsForList().remove(processingQueueName, 0, id);
+        redisTemplate.opsForList().remove(getProcessingQueueName(), 0, id);
     }
 
     public void fail(final String id) throws ExecutionException {
         int failCount = failCache.get(id).incrementAndGet();
         if (failCount < processingErrorRetryCount) {
-            ADD_TO_BACK_REDIS_SCRIPT.exec(redisTemplate, Lists.newArrayList(processingQueueName, queueName), id);
+            ADD_TO_BACK_REDIS_SCRIPT.exec(redisTemplate, Lists.newArrayList(getProcessingQueueName(), queueName), id);
         } else {
-            ADD_TO_FAIL_QUEUE_REIDS_SCRIPT.exec(redisTemplate, Lists.newArrayList(processingQueueName, failQueueName), id);
+            ADD_TO_FAIL_QUEUE_REIDS_SCRIPT.exec(redisTemplate, Lists.newArrayList(getProcessingQueueName(), getFailQueueName()), id);
         }
 
     }
 
     public void enqueueToBack(final String id) {
-        ENQUEUE_TO_LIFT_REIDS_SCRIPT.exec(redisTemplate, Lists.newArrayList(queueName, id, bakQueueName,"4000"));
+        ENQUEUE_TO_LIFT_REIDS_SCRIPT.exec(getRedisTemplate(), Lists.newArrayList(queueName, id, getBakQueueName(), "4000"));
     }
 
     /**
      * @return the processingQueueName
      */
     public String getProcessingQueueName() {
-        return processingQueueName;
+        return getQueueName() + "_processing_queue_" + localIp;
     }
 
     /**
@@ -190,5 +190,47 @@ public class EventQueue {
      */
     public void setProcessingQueueName(String processingQueueName) {
         this.processingQueueName = processingQueueName;
+    }
+
+    /**
+     * @return the failQueueName
+     */
+    public String getFailQueueName() {
+        return getQueueName() + "_failed_queue";
+    }
+
+    /**
+     * @param failQueueName the failQueueName to set
+     */
+    public void setFailQueueName(String failQueueName) {
+        this.failQueueName = failQueueName;
+    }
+
+    /**
+     * @return the bakQueueName
+     */
+    public String getBakQueueName() {
+        return getQueueName() + "_bak_queue_" + LocalTime.now().getHour();
+    }
+
+    /**
+     * @param bakQueueName the bakQueueName to set
+     */
+    public void setBakQueueName(String bakQueueName) {
+        this.bakQueueName = bakQueueName;
+    }
+
+    /**
+     * @return the failCache
+     */
+    public LoadingCache<String, AtomicInteger> getFailCache() {
+        return failCache;
+    }
+
+    /**
+     * @param failCache the failCache to set
+     */
+    public void setFailCache(LoadingCache<String, AtomicInteger> failCache) {
+        this.failCache = failCache;
     }
 }
