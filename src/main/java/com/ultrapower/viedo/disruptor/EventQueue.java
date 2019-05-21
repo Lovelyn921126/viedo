@@ -20,7 +20,7 @@ import com.ultrapower.viedo.utils.cache.gauvaCache.GuavaCache;
 
 /**
  * <p>
- * Description:
+ * Description:  访问 redis 队列
  * </p>
  *
  * @author dell

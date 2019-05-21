@@ -12,6 +12,7 @@ import com.lmax.disruptor.RingBuffer;
 import lombok.extern.slf4j.Slf4j;
 
 /**
+ * 通过eventQueue 访问 redis 的等待来拉取任务 放入 本地任务队列 然后 放入 disruptor 的ringbuffer 中
  * <p>
  * Description:  定义事件工厂
  *  事件工厂(Event Factory)定义了如何实例化前面第1步中定义的事件(Event)，需要实现接口 com.lmax.disruptor.EventFactory<T>。
