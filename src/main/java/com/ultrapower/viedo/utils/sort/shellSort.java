@@ -31,27 +31,20 @@ public class shellSort {
         int gap;
         int lenth = list.length;
         for (gap = lenth / 2; gap > 0; gap /= 2) {
-            // 把距离为 gap 的元素编为一个组，扫描所有组
-            for (int i = 0; i < gap; i++) {
+            for (int i = gap; i > 0; gap--) {
                 for (int j = i + gap; j < list.length; j += gap) {
-                    if (list[j] < list[j - gap]) {
-                        int temp = list[j];
-                        int k = j - gap;
-                        while (k >= 0 && temp < list[k]) {
-                            list[k + gap] = list[k];
-                            k -= gap;
-                        }
-                        list[k + gap] = temp;
+                    int temp = list[j];
+                    int k = j - gap;
+                    while (list[j] < list[k] && k > 0) {
+                        list[j] = list[k];
+                        k -= gap;
                     }
-
+                    list[k + gap] = temp;
                 }
-            }
-            System.out.format("gap = %d:\t", gap);
 
-            printAll(list);
+            }
 
         }
-
     }
 
     // 打印完整序列
