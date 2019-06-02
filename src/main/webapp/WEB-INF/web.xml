@@ -36,15 +36,9 @@
     </servlet-mapping>  -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-<<<<<<< HEAD
-		 <!-- <param-value>classpath*:spring.xml</param-value>  -->
-         <!-- <param-value>classpath*:spring-jtp-atomikos.xml</param-value> -->
-          <param-value>classpath*:spring-druid-atomikos.xml</param-value>
-=======
 		<!--  <param-value>classpath*:spring.xml</param-value> -->
         <!--  <param-value>classpath*:spring-jtp-atomikos.xml</param-value> -->
          <param-value>classpath*:spring-druid-atomikos.xml</param-value>
->>>>>>> branch 'master' of https://github.com/Lovelyn921126/viedo
 	</context-param>
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
