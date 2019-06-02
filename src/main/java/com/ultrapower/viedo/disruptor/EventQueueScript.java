@@ -35,7 +35,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class EventQueueScript {
-    private static String script;
+    private String script;
 
     /**
      * @param script
@@ -60,7 +60,7 @@ public class EventQueueScript {
     }
 
     public void exec(RedisTemplate<String, String> redisTemplate, List<String> list, String id) {
-    	log.info("EventQueueScript----------exec contain ID");
+        log.info("EventQueueScript----------exec contain ID");
         DefaultRedisScript<String> redisScript = new DefaultRedisScript<>();
         redisScript.setScriptText(script);
         redisScript.setResultType(String.class);
@@ -69,7 +69,7 @@ public class EventQueueScript {
     }
 
     public void exec(RedisTemplate<String, String> redisTemplate, List<String> list) {
-    	log.info("EventQueueScript----------exec not ID");
+        log.info("EventQueueScript----------exec not ID");
         DefaultRedisScript<String> redisScript = new DefaultRedisScript<>();
         redisScript.setScriptText(script);
         redisScript.setResultType(String.class);

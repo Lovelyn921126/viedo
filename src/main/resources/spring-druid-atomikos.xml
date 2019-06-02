@@ -142,4 +142,5 @@
         <property name="sqlSessionFactoryBeanName" value="sqlsessionFactoryTwo" />
         <property name="basePackage" value="com.ultrapower.viedo.dao.two"></property>
     </bean>
+    <import resource="redis.xml" /> 
 </beans>
