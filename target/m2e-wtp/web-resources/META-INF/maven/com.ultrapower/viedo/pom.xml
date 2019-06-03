@@ -391,6 +391,16 @@
        <version>1.8.18.RELEASE</version>
    </dependency>
    <dependency>
+   	<groupId>org.elasticsearch</groupId>
+   	<artifactId>elasticsearch</artifactId>
+   	<version>5.6.12</version>
+   </dependency>
+   <dependency>
+   	<groupId>org.elasticsearch.client</groupId>
+   	<artifactId>transport</artifactId>
+   	<version>5.6.12</version>
+   </dependency>
+    <dependency>
        <groupId>org.apache.commons</groupId>
        <artifactId>commons-pool2</artifactId>
        <version>2.4.2</version>
@@ -400,6 +410,7 @@
        <artifactId>jcl-over-slf4j</artifactId>
        <version>1.7.20</version>
    </dependency>  
+
     </dependencies>
     <build>
         <finalName>viedo</finalName>
