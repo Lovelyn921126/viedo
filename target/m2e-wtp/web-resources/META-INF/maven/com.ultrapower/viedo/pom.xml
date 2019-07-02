@@ -409,7 +409,7 @@
        <groupId>org.slf4j</groupId>
        <artifactId>jcl-over-slf4j</artifactId>
        <version>1.7.20</version>
-   </dependency>  
+   </dependency>
 
     </dependencies>
     <build>
