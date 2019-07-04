@@ -8,10 +8,11 @@
        http://dubbo.apache.org/schema/dubbo/dubbo.xsd">
        
        <dubbo:application name="hello-world-app" />
-       <dubbo:registry address="multicast://224.5.6.7:1234" check="true"/>
-     
+       <!-- register false 只订阅   subscribe  false  只注册  dynamic="false" 人工管理服务提供者的上线和下线  -->
+       <dubbo:registry address="multicast://224.5.6.7:1234" check="true" register="false" subscribe="false" dynamic="false"/>
+     <!-- url  直连提供者 -->
        
-      <dubbo:reference id="demoService" interface="com.alibaba.dubbo.demo.DemoService"  group="demo1" cache="false" retries="2" cluster="Failsafe" loadbalance="roundrobin">
+      <dubbo:reference id="demoService" interface="com.alibaba.dubbo.demo.DemoService"  group="demo1" cache="false" retries="2" cluster="Failsafe" loadbalance="roundrobin" url="dubbo://localhost:20890">
          <dubbo:method name="findFoo" retries="2"/>
       </dubbo:reference>
       

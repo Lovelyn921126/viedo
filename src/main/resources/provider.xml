@@ -8,7 +8,9 @@
        http://dubbo.apache.org/schema/dubbo/dubbo.xsd">
        
        <dubbo:application name="hello-world-app" />
-       <dubbo:registry address="multicast://224.5.6.7:1234" check="true"/>
+       <dubbo:registry address="multicast://224.5.6.7:1234" check="true" id="chinaRegistry"/>
+        <dubbo:registry address="multicast://224.5.6.7:1235" check="true" id="intlRegistry" default="
+        false"/>
        <dubbo:protocol name="dubbo" port="20880" dispatcher="all" threadpool="fixed" threads="100"/>
       <!-- Dispatcher
       all 所有消息都派发到线程池，包括请求，响应，连接事件，断开事件，心跳等。
@@ -23,8 +25,8 @@
       eager 优先创建Worker线程池。在任务数量大于corePoolSize但是小于maximumPoolSize时，优先创建Worker来处理任务。
                      当任务数量大于maximumPoolSize时，将任务放入阻塞队列中。阻塞队列充满时抛出RejectedExecutionException。(相比于cached:cached在任务数量超过maximumPoolSize时直接抛出异常而不是将任务放入阻塞队列) -->
        <dubbo:protocol name="rmi" port="1099" />
-       <dubbo:service interface="com.alibaba.dubbo.demo.DemoService" version="0.0.0" ref="demoService" retries="2" cluster="failsafe" loadbalance="roundrobin" protocol="dubbo"></dubbo:service>
-       <dubbo:service interface="com.alibaba.hello.api.DemoService" version="*" ref="demoService" protocol="rmi" group="demo" /> 
+       <dubbo:service interface="com.alibaba.dubbo.demo.DemoService" version="0.0.0" registry="intlRegistry" ref="demoService" retries="2" cluster="failsafe" loadbalance="roundrobin" protocol="dubbo"></dubbo:service>
+       <dubbo:service interface="com.alibaba.hello.api.DemoService" version="*" ref="demoService" protocol="rmi" group="demo" registry="chinaRegistry" /> 
        <dubbo:consumer cache="lru" check="true" actives="1000" cluster="true"/>
        <!-- 和本地bean一样实现服务 -->
        <bean id="demoService" class="com.alibaba.dubbo.demo.provider.DemoServiceImpl" />
